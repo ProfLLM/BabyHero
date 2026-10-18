@@ -16,18 +16,65 @@ final class ToneAnalyzerTests: XCTestCase {
         return results
     }
 
+    private func noisyTone(_ frequency: Double, seconds: Double = 6, rate: Double = 48_000,
+                           toneSeconds: Double? = nil, seed initialSeed: UInt64 = 23) -> [Float] {
+        var seed = initialSeed
+        let amplitude = pow(10.0, -55.0 / 20)
+        let noiseAmplitude = pow(10.0, -35.0 / 20) * sqrt(3)
+        return (0..<Int(rate * seconds)).map { index in
+            seed = seed &* 6_364_136_223_846_793_005 &+ 1
+            let noise = (Double(seed >> 32) / Double(UInt32.max) * 2 - 1) * noiseAmplitude
+            let time = Double(index) / rate
+            let signal = time < (toneSeconds ?? seconds) ? amplitude * sin(2 * .pi * frequency * time) : 0
+            return Float(signal + noise)
+        }
+    }
+
+    func testDiscoversWeakStationaryToneInNoise() {
+        for rate in [44_100.0, 48_000.0, 96_000.0] {
+            for frequency in [9_000.0, 9_234.0] {
+                let settled = analyze(noisyTone(frequency, rate: rate), rate: rate).filter { $0.elapsed >= 3 }
+                let matches = settled.filter { snapshot in
+                    snapshot.tones.contains { abs($0.frequency - frequency) < 20 }
+                }
+                XCTAssertGreaterThan(Double(matches.count) / Double(settled.count), 0.95,
+                                     "Weak \(frequency) Hz tone at \(rate) Hz input should remain discoverable")
+            }
+        }
+    }
+
+    func testNoiseAloneAndBriefNoisyTonesDoNotBecomePersistent() {
+        for seed: UInt64 in [1, 23, 97] {
+            for duration in [0.0, 0.3, 0.6] {
+                let results = analyze(noisyTone(9_000, toneSeconds: duration, seed: seed))
+                XCTAssertTrue(results.allSatisfy { $0.tones.isEmpty }, "seed \(seed), duration \(duration)")
+            }
+        }
+    }
+
+    func testWeakToneDisappearsAndTrackingIsLostWhenSourceStops() throws {
+        let analyzer = ToneAnalyzer(sampleRate: 48_000)!
+        analyzer.select(frequency: 9_000)
+        let results = analyzer.process(noisyTone(9_000, toneSeconds: 3))
+        XCTAssertTrue(results.contains { !$0.tones.isEmpty })
+        let afterStop = results.filter { $0.elapsed >= 3.8 }
+        XCTAssertTrue(afterStop.allSatisfy { $0.tones.isEmpty && $0.tracking?.trend == .lost })
+        XCTAssertNil(try XCTUnwrap(results.last?.tracking).level)
+    }
+
     func testDetectsToneAtActualSampleRates() throws {
         for rate in [44_100.0, 48_000.0, 96_000.0] {
             let result = try XCTUnwrap(analyze(tone(12_345, rate: rate), rate: rate).last)
             let detected = try XCTUnwrap(result.tones.first)
-            XCTAssertEqual(detected.frequency, 12_345, accuracy: rate / 4096)
+            XCTAssertEqual(detected.frequency, 12_345, accuracy: rate / Double(ToneAnalyzer.windowSize))
             XCTAssertEqual(detected.level, 20 * log10(0.08), accuracy: 0.4)
         }
     }
 
-    func testRequiresOneSecondOfPersistence() {
+    func testRequiresPersistenceBeforeShowingTone() {
         let results = analyze(tone(15_000, seconds: 1.5))
-        XCTAssertTrue(results.filter { $0.elapsed < 1.08 }.allSatisfy { $0.tones.isEmpty })
+        let earliestConfirmation = Double(ToneAnalyzer.windowSize) / 48_000 + ToneAnalyzer.persistenceDuration
+        XCTAssertTrue(results.filter { $0.elapsed < earliestConfirmation }.allSatisfy { $0.tones.isEmpty })
         XCTAssertFalse(results.last!.tones.isEmpty)
     }
 
@@ -114,7 +161,7 @@ final class ToneAnalyzerTests: XCTestCase {
         let analyzer = ToneAnalyzer(sampleRate: 48_000)!
         let clipped = analyzer.process(tone(12_000, amplitude: 1)).last!
         XCTAssertTrue(clipped.isClipping)
-        let invalid = analyzer.process([Float](repeating: .nan, count: 8_192)).last!
+        let invalid = analyzer.process([Float](repeating: .nan, count: ToneAnalyzer.windowSize * 2)).last!
         XCTAssertFalse(invalid.isClipping)
         XCTAssertTrue(invalid.tones.allSatisfy { $0.level.isFinite })
     }
