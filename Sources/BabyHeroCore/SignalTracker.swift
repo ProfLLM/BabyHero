@@ -38,8 +38,9 @@ public struct SignalTracker {
             let previous = samples.filter { $0.time <= time - 1 }
             let current = samples.filter { $0.time > time - 1 }
             if !previous.isEmpty && !current.isEmpty {
-                let difference = current.map(\.level).reduce(0, +) / Double(current.count)
-                    - previous.map(\.level).reduce(0, +) / Double(previous.count)
+                let currentAverage: Double = current.map(\.level).reduce(0, +) / Double(current.count)
+                let previousAverage: Double = previous.map(\.level).reduce(0, +) / Double(previous.count)
+                let difference = currentAverage - previousAverage
                 trend = difference > 3 ? .stronger : difference < -3 ? .weaker : .steady
             }
         }
