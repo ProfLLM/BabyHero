@@ -3,8 +3,11 @@ import Foundation
 
 /// Streaming, bounded-memory tone detector. Access from one serial queue.
 public final class ToneAnalyzer {
-    public static let windowSize = 4096
-    public static let hopSize = 2048
+    /// Confirm a sustained tone promptly while rejecting short chirps.
+    public static let persistenceDuration = 0.75
+    public static let windowSize = 8192
+    public static let hopSize = 4096
+    private static let fftLog2 = vDSP_Length(13)
     public let sampleRate: Double
     public var upperFrequency: Double { min(20_000, sampleRate * 0.45) }
     private let fft: FFTSetup
@@ -13,6 +16,11 @@ public final class ToneAnalyzer {
     private var imaginary = [Float](repeating: 0, count: windowSize)
     private var window = [Float](repeating: 0, count: windowSize)
     private var levels = [Double](repeating: -160, count: windowSize / 2)
+    private var detectionLevels = [Double](repeating: -160, count: windowSize / 2)
+    private var powerSum = [Double](repeating: 0, count: windowSize / 2)
+    private var powerHistory: [[Double]]
+    private var powerIndex = 0
+    private var powerCount = 0
     private var writeIndex = 0
     private var totalSamples = 0
     private var sinceFrame = 0
@@ -36,9 +44,11 @@ public final class ToneAnalyzer {
 
     public init?(sampleRate: Double) {
         guard sampleRate.isFinite, sampleRate >= 20_000,
-              let fft = vDSP_create_fftsetup(12, FFTRadix(kFFTRadix2)) else { return nil }
+              let fft = vDSP_create_fftsetup(Self.fftLog2, FFTRadix(kFFTRadix2)) else { return nil }
         self.sampleRate = sampleRate
         self.fft = fft
+        let frames = Int(max(2, min(32, ceil(0.3 * sampleRate / Double(Self.hopSize)))))
+        powerHistory = Array(repeating: [Double](repeating: 0, count: Self.windowSize / 2), count: frames)
         vDSP_hann_window(&window, vDSP_Length(Self.windowSize), Int32(vDSP_HANN_DENORM))
     }
 
@@ -55,6 +65,10 @@ public final class ToneAnalyzer {
         sinceFrame = 0
         tracks.removeAll(keepingCapacity: true)
         ring = [Float](repeating: 0, count: Self.windowSize)
+        powerSum = [Double](repeating: 0, count: Self.windowSize / 2)
+        powerHistory = Array(repeating: powerSum, count: powerHistory.count)
+        powerIndex = 0
+        powerCount = 0
         tracker?.reset()
     }
 
@@ -84,19 +98,25 @@ public final class ToneAnalyzer {
         real.withUnsafeMutableBufferPointer { r in
             imaginary.withUnsafeMutableBufferPointer { i in
                 var split = DSPSplitComplex(realp: r.baseAddress!, imagp: i.baseAddress!)
-                vDSP_fft_zip(fft, &split, 1, 12, FFTDirection(FFT_FORWARD))
+                vDSP_fft_zip(fft, &split, 1, Self.fftLog2, FFTDirection(FFT_FORWARD))
             }
         }
         // One-sided amplitude, corrected for the Hann window's coherent gain.
         let scale = 4.0 / Double(Self.windowSize)
+        powerCount = min(powerCount + 1, powerHistory.count)
         for bin in levels.indices {
             let magnitude = hypot(Double(real[bin]), Double(imaginary[bin])) * scale
             levels[bin] = 20 * log10(max(magnitude, 1e-8))
+            let power = magnitude * magnitude
+            powerSum[bin] += power - powerHistory[powerIndex][bin]
+            powerHistory[powerIndex][bin] = power
+            detectionLevels[bin] = 10 * log10(max(powerSum[bin] / Double(powerCount), 1e-16))
         }
+        powerIndex = (powerIndex + 1) % powerHistory.count
         let time = Double(totalSamples) / sampleRate
         let peaks = findPeaks()
         updateTracks(peaks, time: time)
-        let tones = tracks.filter { time - $0.firstSeen >= 1 && time - $0.lastSeen < 0.2 }
+        let tones = tracks.filter { time - $0.firstSeen >= Self.persistenceDuration && time - $0.lastSeen < 0.2 }
             .sorted { $0.level > $1.level }
             .prefix(3)
             .map { Tone(id: $0.id, frequency: $0.frequency, level: $0.level, prominence: $0.prominence) }
@@ -120,16 +140,19 @@ public final class ToneAnalyzer {
         guard lower <= upper else { return [] }
         var peaks: [Peak] = []
         for bin in lower...upper {
-            let level = levels[bin]
-            guard level > -85, level > levels[bin - 1], level >= levels[bin + 1] else { continue }
+            let level = detectionLevels[bin]
+            guard level > -85, level > detectionLevels[bin - 1], level >= detectionLevels[bin + 1] else { continue }
             // Exclude the main lobe; median of neighboring bins estimates local noise.
-            let neighbors = ((bin - 24)...(bin - 5)).map { levels[$0] }
-                + ((bin + 5)...(bin + 24)).map { levels[$0] }
+            let neighbors = ((bin - 24)...(bin - 5)).map { detectionLevels[$0] }
+                + ((bin + 5)...(bin + 24)).map { detectionLevels[$0] }
             let ordered = neighbors.sorted()
             let background = ordered[ordered.count / 2]
             let prominence = level - background
-            guard prominence >= 12 else { continue }
-            let left = levels[bin - 1], right = levels[bin + 1]
+            // Average spectral power over 0.3 s so random noise fluctuations do
+            // not repeatedly erase a weak stationary tone's persistence.
+            // Current-frame evidence prevents the average alone retaining a lost tone.
+            guard prominence >= 8, levels[bin] > -85, levels[bin] - background >= 3 else { continue }
+            let left = detectionLevels[bin - 1], right = detectionLevels[bin + 1]
             let denominator = left - 2 * level + right
             let offset = abs(denominator) > 1e-9 ? max(-0.5, min(0.5, 0.5 * (left - right) / denominator)) : 0
             let frequency = (Double(bin) + offset) * step

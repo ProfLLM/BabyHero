@@ -5,7 +5,7 @@
 The macOS signal test suite checks:
 
 - Frequency and amplitude accuracy at 44.1, 48, and 96 kHz.
-- One-second persistence and rejection of silence, broadband noise, brief tones, and out-of-band signals.
+- Sustained-tone confirmation and rejection of silence, broadband noise, brief tones, and out-of-band signals.
 - Multiple tones, strongest-first ordering, arbitrary buffer boundaries, and Nyquist limits.
 - Selected-tone locking, amplitude changes, signal loss, reacquisition, and reset behavior.
 - Trend comparison windows, smoothing, bounded history, clipping, and nonfinite samples.
@@ -27,6 +27,12 @@ Results on October 17, 2026, using Xcode 27.1:
 The microphone-grant test reached live capture and successfully stopped it in the simulator. Audio setup/teardown run off the UI thread. Permission callbacks wait for an active scene; cancellation and session operation identifiers prevent stale capture work from updating a newer session. At accessibility text sizes, the pinned action uses a shorter label and omits the decorative privacy tagline to keep readings reachable.
 
 Simulator capture and synthetic PCM tests do not establish real iPhone high-frequency sensitivity. The build emits only Xcode’s informational App Intents metadata warning because this app has no App Intents dependency.
+
+## Faster confirmation verification — October 18, 2026
+
+The confirmation period is now 0.75 seconds. `swift test --scratch-path build/ToneLatency-SPM` passed all 21 signal, tracking, and latency tests. At 44.1, 48, and 96 kHz, synthetic clear 9 kHz tones appeared within 1.05 seconds of audio; the tested weak 9 kHz tone in noise appeared within 1.5 seconds. The latency suite also rejected 0.6-second tones with and without noise across those rates and three noise seeds. These timings exclude microphone startup and UI delivery.
+
+The unsigned iPhone Release build passed using `build/ToneLatency-iOS`; its log is `build/tone-latency-ios-build.log`. Physical iPhone latency remains to be measured after installing the updated app.
 
 ## Physical iPhone protocol — pending
 

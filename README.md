@@ -68,7 +68,7 @@ Available values: `idle`, `listening`, `finder`, `lost`, `quiet`, `paused`, `den
 
 ### Signal defaults
 
-The detector uses 4,096-sample Hann windows, 50% overlap, a 12 dB local spectral prominence requirement, a −85 dBFS candidate floor, and one second of persistence. The search band is 8 kHz through the lesser of 20 kHz and 45% of the actual sample rate. A 48 kHz request is a preference, not a measurement of the microphone’s response.
+The detector uses 8,192-sample Hann windows with 50% overlap and averages spectral power over roughly 0.3 seconds. Candidates require 8 dB of local prominence in the averaged spectrum, a −85 dBFS floor, and current-frame evidence at least 3 dB above the averaged local background. A tone needs 0.75 seconds of persistence; clear tones are confirmed in about one second of audio at typical input sample rates. Short-term averaging helps weak steady tones survive noise fluctuations, while current-frame evidence prevents an old average alone from retaining a stopped tone. The search band is 8 kHz through the lesser of 20 kHz and 45% of the actual sample rate. A 48 kHz request is a preference, not a measurement of the microphone’s response.
 
 The finder measures a narrow band around the selected tone (100 Hz matching tolerance), smooths its digital level, and compares consecutive one-second windows with a 3 dB deadband. The circular gauge uses a fixed −90 to −10 dBFS display scale; this is not a sound-pressure calibration. History is limited to 12 seconds and discarded when stopping. Dropped buffers reset persistence and comparisons rather than joining discontinuous audio.
 
