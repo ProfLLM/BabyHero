@@ -1,0 +1,270 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+		EB1B90FAC7677BEF9EA0C0BF = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppModel.swift"; sourceTree = "<group>";
+		};
+		E66E0B5220704CE4F64B56AE = {
+			isa = PBXBuildFile; fileRef = EB1B90FAC7677BEF9EA0C0BF;
+		};
+		D346D8C77F0E5E0E93E33BB7 = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioCapture.swift"; sourceTree = "<group>";
+		};
+		A2A56D14CBCD98EEC1C5265E = {
+			isa = PBXBuildFile; fileRef = D346D8C77F0E5E0E93E33BB7;
+		};
+		664D7F200E2EFB9AE3BA6DA2 = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BabyHeroApp.swift"; sourceTree = "<group>";
+		};
+		F804C82C2BCF9DE5214572EA = {
+			isa = PBXBuildFile; fileRef = 664D7F200E2EFB9AE3BA6DA2;
+		};
+		A557BEE5F36C02D739F81C96 = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView.swift"; sourceTree = "<group>";
+		};
+		F66B57E0A8E245B2AF4469C9 = {
+			isa = PBXBuildFile; fileRef = A557BEE5F36C02D739F81C96;
+		};
+		90F62BFA89D522D3EFD56F58 = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Design.swift"; sourceTree = "<group>";
+		};
+		B5831F86ECEA65DB6BD690F3 = {
+			isa = PBXBuildFile; fileRef = 90F62BFA89D522D3EFD56F58;
+		};
+		58D441069E4189F4D4F5D17C = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FinderView.swift"; sourceTree = "<group>";
+		};
+		4BBC6AA8D24E075C907C966B = {
+			isa = PBXBuildFile; fileRef = 58D441069E4189F4D4F5D17C;
+		};
+		06D84B1DE077BE29BCA14734 = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InformationView.swift"; sourceTree = "<group>";
+		};
+		CC261CD886EA09CB5317F6D1 = {
+			isa = PBXBuildFile; fileRef = 06D84B1DE077BE29BCA14734;
+		};
+		28AAD1477D5182D66D4B03B3 = {
+			isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>";
+		};
+		A0CA4E1758823471A02FE2F1 = {
+			isa = PBXBuildFile; fileRef = 28AAD1477D5182D66D4B03B3;
+		};
+		26B2A637F7DC4079D5AB78A5 = {
+			isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>";
+		};
+		24B4C7C0927EC3C4340886F7 = {
+			isa = PBXBuildFile; fileRef = 26B2A637F7DC4079D5AB78A5;
+		};
+		7B594B6DB375E1BF3F23CDD6 = {
+			isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>";
+		};
+		3C3B0F03DC089F93B8457928 = {
+			isa = PBXGroup; children = (
+				EB1B90FAC7677BEF9EA0C0BF,
+				D346D8C77F0E5E0E93E33BB7,
+				664D7F200E2EFB9AE3BA6DA2,
+				A557BEE5F36C02D739F81C96,
+				90F62BFA89D522D3EFD56F58,
+				58D441069E4189F4D4F5D17C,
+				06D84B1DE077BE29BCA14734,
+				28AAD1477D5182D66D4B03B3,
+				26B2A637F7DC4079D5AB78A5,
+				7B594B6DB375E1BF3F23CDD6,
+			); path = BabyHero; sourceTree = "<group>";
+		};
+		BE2892971A84122A94A9791B = {
+			isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyHeroUITests.swift; sourceTree = "<group>";
+		};
+		0F2612BBE722F8B97292B1A7 = {
+			isa = PBXGroup; children = (BE2892971A84122A94A9791B,); path = BabyHeroUITests; sourceTree = "<group>";
+		};
+		441BE0495D5DF14C1C120247 = {
+			isa = PBXBuildFile; fileRef = BE2892971A84122A94A9791B;
+		};
+		4E783A9E10D2A8ABA38CD11C = {
+			isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyHero.app; sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9B7BED31F6F48AD5D908B2BC = {
+			isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BabyHeroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FBDC4F23F93125BBEEAE800C = {
+			isa = PBXGroup; children = (4E783A9E10D2A8ABA38CD11C,9B7BED31F6F48AD5D908B2BC,); name = Products; sourceTree = "<group>";
+		};
+		B28B7AF69320201D1CF206EB = {
+			isa = PBXGroup; children = (3C3B0F03DC089F93B8457928,0F2612BBE722F8B97292B1A7,FBDC4F23F93125BBEEAE800C,); sourceTree = "<group>";
+		};
+		582681C2EAE02B3F3D399C0C = {
+			isa = XCLocalSwiftPackageReference; relativePath = .;
+		};
+		8D6A224FA1D1DD751157EB0C = {
+			isa = XCSwiftPackageProductDependency; package = 582681C2EAE02B3F3D399C0C; productName = BabyHeroCore;
+		};
+		D9F82689E8F760ECED47CA3E = {
+			isa = PBXBuildFile; productRef = 8D6A224FA1D1DD751157EB0C;
+		};
+		949D493B91791558E87BC5D7 = {
+			isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+				E66E0B5220704CE4F64B56AE,
+				A2A56D14CBCD98EEC1C5265E,
+				F804C82C2BCF9DE5214572EA,
+				F66B57E0A8E245B2AF4469C9,
+				B5831F86ECEA65DB6BD690F3,
+				4BBC6AA8D24E075C907C966B,
+				CC261CD886EA09CB5317F6D1,
+			); runOnlyForDeploymentPostprocessing = 0;
+		};
+		8ECC8B5D05B79F879ACDF1A2 = {
+			isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
+				A0CA4E1758823471A02FE2F1,
+				24B4C7C0927EC3C4340886F7,
+			); runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD92572B49AC16A86614498D = {
+			isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (D9F82689E8F760ECED47CA3E,); runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9ACDEB529017EFC18F5E60A = {
+			isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (441BE0495D5DF14C1C120247,); runOnlyForDeploymentPostprocessing = 0;
+		};
+		39F831DAFE5A2F37503C83B2 = {
+			isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED8772ADEC3A6C25161BC957 = {
+			isa = XCBuildConfiguration; buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				SDKROOT = iphoneos;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SWIFT_VERSION = 6.0;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = YES;
+			}; name = Debug;
+		};
+		00F209874A1F7309F6DCEAA7 = {
+			isa = XCBuildConfiguration; buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				SDKROOT = iphoneos;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SWIFT_VERSION = 6.0;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			}; name = Release;
+		};
+		90061A5F4E19D1411B425E01 = {
+			isa = XCConfigurationList; buildConfigurations = (
+				ED8772ADEC3A6C25161BC957,
+				00F209874A1F7309F6DCEAA7,
+			); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;
+		};
+		F8975E934DA2067E0E497395 = {
+			isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BabyHero/Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.babyhero.BabyHero;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				ENABLE_PREVIEWS = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = YES;
+			}; name = Debug;
+		};
+		F72D4F08E84CA4C7F809A7CF = {
+			isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BabyHero/Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.babyhero.BabyHero;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				ENABLE_PREVIEWS = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			}; name = Release;
+		};
+		F71882A9CB03F905E32BBDCE = {
+			isa = XCConfigurationList; buildConfigurations = (
+				F8975E934DA2067E0E497395,
+				F72D4F08E84CA4C7F809A7CF,
+			); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;
+		};
+		BAC435B037607B50C4729BF1 = {
+			isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.babyhero.BabyHeroUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = BabyHero;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = YES;
+			}; name = Debug;
+		};
+		5DE0B96147C56CE7EB664EA3 = {
+			isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.babyhero.BabyHeroUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = BabyHero;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			}; name = Release;
+		};
+		F67DB0877D9AED0B87D4522B = {
+			isa = XCConfigurationList; buildConfigurations = (
+				BAC435B037607B50C4729BF1,
+				5DE0B96147C56CE7EB664EA3,
+			); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;
+		};
+		F75109BEB4DD8800DA6B45F8 = {
+			isa = PBXNativeTarget; buildConfigurationList = F71882A9CB03F905E32BBDCE; buildPhases = (949D493B91791558E87BC5D7,BD92572B49AC16A86614498D,8ECC8B5D05B79F879ACDF1A2,); buildRules = (); dependencies = (); name = BabyHero; packageProductDependencies = (8D6A224FA1D1DD751157EB0C,); productName = BabyHero; productReference = 4E783A9E10D2A8ABA38CD11C; productType = "com.apple.product-type.application";
+		};
+		C79C3E4FFACCEA2AC84AC2E0 = {
+			isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = F75109BEB4DD8800DA6B45F8; remoteInfo = BabyHero;
+		};
+		78D4D3B103AF9C6E20F8E04F = {
+			isa = PBXTargetDependency; target = F75109BEB4DD8800DA6B45F8; targetProxy = C79C3E4FFACCEA2AC84AC2E0;
+		};
+		794AAC98ACE6EB716B86C3A5 = {
+			isa = PBXNativeTarget; buildConfigurationList = F67DB0877D9AED0B87D4522B; buildPhases = (F9ACDEB529017EFC18F5E60A,39F831DAFE5A2F37503C83B2,); buildRules = (); dependencies = (78D4D3B103AF9C6E20F8E04F,); name = BabyHeroUITests; productName = BabyHeroUITests; productReference = 9B7BED31F6F48AD5D908B2BC; productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		98F54143AB4E86B28C3AFEE0 = {
+			isa = PBXProject; attributes = { BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 1600; TargetAttributes = { F75109BEB4DD8800DA6B45F8 = {CreatedOnToolsVersion = 16.0; }; 794AAC98ACE6EB716B86C3A5 = { CreatedOnToolsVersion = 16.0; TestTargetID = F75109BEB4DD8800DA6B45F8; }; }; }; buildConfigurationList = 90061A5F4E19D1411B425E01; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base,); mainGroup = B28B7AF69320201D1CF206EB; packageReferences = (582681C2EAE02B3F3D399C0C,); productRefGroup = FBDC4F23F93125BBEEAE800C; projectDirPath = ""; projectRoot = ""; targets = (F75109BEB4DD8800DA6B45F8,794AAC98ACE6EB716B86C3A5,);
+		};
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0;
+}
